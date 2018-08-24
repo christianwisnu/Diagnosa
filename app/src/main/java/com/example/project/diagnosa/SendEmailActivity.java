@@ -169,4 +169,6 @@ public class SendEmailActivity extends AppCompatActivity {
 [20:33, 8/19/2018] Christian: Tulisan kesimpulan dll di semua pdf, dbold dan dberi margin (FIX)
 centang pilih anatomi disesuaikan dgn urutan centangnya (FIX)
 edit profile di laporan. apakah dmunculkan tombol save, lalu simpan dan lanjutkan dhilangkan?
+
+coba AHHHH
 */
