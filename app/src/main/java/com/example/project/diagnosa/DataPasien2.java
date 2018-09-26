@@ -1,5 +1,6 @@
 package com.example.project.diagnosa;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -66,6 +68,7 @@ public class DataPasien2 extends AppCompatActivity {
     private DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
     private AlertDialog alert;
+    private EditText edTgl;
 
     @BindView(R.id.btnDataPasienSave2)Button btnSave;
     @BindView(R.id.btnDataPasienSaveLanjut2)Button btnSaveLanjut;
@@ -73,12 +76,11 @@ public class DataPasien2 extends AppCompatActivity {
     @BindView(R.id.input_layout_datapasien_nama2)TextInputLayout inputLayoutNama;
     @BindView(R.id.input_layout_datapasien_alamat2)TextInputLayout inputLayoutAlamat;
     @BindView(R.id.input_layout_datapasien_telp2)TextInputLayout inputLayoutTelp;
-    @BindView(R.id.input_layout_datapasien_tgl2)TextInputLayout inputLayoutTgl;
     @BindView(R.id.eDataPasienKode2)EditText eKode;
     @BindView(R.id.eDataPasienNama2)EditText eNama;
     @BindView(R.id.eDataPasienAlamat2)EditText eAlamat;
     @BindView(R.id.eDataPasienTelp2)EditText eTelp;
-    @BindView(R.id.eDataPasienTgl2)EditText eTgl;
+    //@BindView(R.id.eDataPasienTgl2)EditText eTgl;
     @BindView(R.id.img_datapasien_kalendar2)ImageView imgKalendar;
     @BindView(R.id.rgDataPasienGender2)RadioGroup rgGender;
     @BindView(R.id.rbDataPasienLaki2)RadioButton rbLaki;
@@ -109,6 +111,7 @@ public class DataPasien2 extends AppCompatActivity {
         ButterKnife.bind(this);
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
+        edTgl = (EditText)findViewById(R.id.eDataPasienTgl2);
         try{
             if(status==2 || status==10){
                 eKode.setText(kode);
@@ -116,7 +119,7 @@ public class DataPasien2 extends AppCompatActivity {
                 eAlamat.setText(alamat);
                 hasilTgl=tgl;
                 Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(tgl);
-                eTgl.setText(sdf1.format(date1.getTime()));
+                edTgl.setText(sdf1.format(date1.getTime()));
                 eTelp.setText(telp);
                 if(gender.equals("L")){
                     rbLaki.setChecked(true);
@@ -130,6 +133,35 @@ public class DataPasien2 extends AppCompatActivity {
             }
         }catch (Exception ex){}
         btnSaveLanjut.setText(Html.fromHtml("Simpan & Lanjutkan"));
+
+        edTgl.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    edTgl.setEnabled(false);
+                    hideKeyboard(v);
+                    new DatePickerDialog(DataPasien2.this, dFrom, dateAndTime.get(Calendar.YEAR),dateAndTime.get(Calendar.MONTH),
+                            dateAndTime.get(Calendar.DAY_OF_MONTH)).show();
+                    edTgl.setEnabled(true);
+                }
+            }
+        });
+
+        edTgl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edTgl.setEnabled(false);
+                hideKeyboard(v);
+                new DatePickerDialog(DataPasien2.this, dFrom, dateAndTime.get(Calendar.YEAR),dateAndTime.get(Calendar.MONTH),
+                        dateAndTime.get(Calendar.DAY_OF_MONTH)).show();
+                edTgl.setEnabled(true);
+            }
+        });
+    }
+
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @OnClick(R.id.img_datapasien_kalendar2)
@@ -140,7 +172,7 @@ public class DataPasien2 extends AppCompatActivity {
 
     @OnClick(R.id.btnDataPasienSave2)
     protected void save(){
-        if(validateNama(eNama) && validateKalender(eTgl) && validateGender(rgGender)
+        if(validateNama(eNama) && validateKalender(edTgl) && validateGender(rgGender)
                 && validateAlamat(eAlamat) && validateTelp(eTelp)){
             int selectedId = rgGender.getCheckedRadioButtonId();
             radioButton = (RadioButton) findViewById(selectedId);
@@ -179,7 +211,7 @@ public class DataPasien2 extends AppCompatActivity {
 
     @OnClick(R.id.btnDataPasienSaveLanjut2)
     protected void savelanjut(){
-        if(validateNama(eNama) && validateKalender(eTgl) && validateGender(rgGender)
+        if(validateNama(eNama) && validateKalender(edTgl) && validateGender(rgGender)
                 && validateAlamat(eAlamat) && validateTelp(eTelp)){
             int selectedId = rgGender.getCheckedRadioButtonId();
             radioButton = (RadioButton) findViewById(selectedId);
@@ -386,7 +418,7 @@ public class DataPasien2 extends AppCompatActivity {
     };
 
     private void updatelabelFrom(){
-        eTgl.setText(sdf1.format(dateAndTime.getTime()));
+        edTgl.setText(sdf1.format(dateAndTime.getTime()));
         tglLahir=dateAndTime.getTime();
         hasilTgl=sdf2.format(dateAndTime.getTime());
     }
@@ -456,12 +488,11 @@ public class DataPasien2 extends AppCompatActivity {
 
     private boolean validateKalender(EditText edittext) {
         boolean value;
-        if (eTgl.getText().toString().isEmpty()){
+        if (edTgl.getText().toString().isEmpty()){
+            Toast.makeText(DataPasien2.this, "Tanggal Lahir harap diisi!", Toast.LENGTH_LONG).show();
             value=false;
-            inputLayoutTgl.setError(getString(R.string.err_msg_birthday));
         } else {
             value=true;
-            inputLayoutTgl.setError(null);
         }
         return value;
     }

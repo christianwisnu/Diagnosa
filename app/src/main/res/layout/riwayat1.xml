@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -36,54 +38,43 @@
             android:orientation="vertical"
             android:background="@color/md_purple_700">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_marginLeft="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ID Pasien: "
-                    android:textColor="@color/md_white"
-                    android:textSize="15dp"/>
-
-                <EditText
-                    android:id="@+id/edIdPasienTrans2"
-                    android:layout_marginLeft="5dp"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:textColor="@color/md_white"/>
-
-                <TextView
-                    android:layout_marginLeft="3dp"
-                    android:id="@+id/txtPilihPasienTrans2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Pilih"
-                    android:textStyle="bold"
-                    android:textColor="@color/md_white"/>
-
-            </LinearLayout>
-
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp">
 
-                <CheckBox
-                    android:id="@+id/ckAllPasienTrans2"
-                    android:layout_marginLeft="5dp"
+                <android.support.design.widget.TextInputLayout
+                    android:layout_alignParentLeft="true"
+                    android:id="@+id/input_layout_riwayat1_nama2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/md_white"
+                    android:textColorHint="@color/md_white"
+                    app:errorTextAppearance="@style/error_appearance"
+                    app:hintTextAppearance="@style/label_text">
+
+                    <EditText
+                        android:enabled="false"
+                        android:id="@+id/eRiwayat1PasienNama2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Nama Pasien"
+                        android:textColor="@color/md_white"
+                        android:textColorHint="@color/md_white">
+
+                    </EditText>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <ImageView
+                    android:id="@+id/imgPilihPasienRiwayat1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Semua Pasien"
-                    android:textColor="@color/md_white"
-                    android:buttonTint="@color/md_white"/>
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:background="@mipmap/ic_action_search_white"/>
 
-            </LinearLayout>
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -97,15 +88,6 @@
                     android:text="Periode: "
                     android:textColor="@color/md_white"
                     android:textSize="15dp"/>
-
-                <CheckBox
-                    android:layout_marginLeft="170dp"
-                    android:id="@+id/ckAllPeriode2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Semua"
-                    android:textColor="@color/md_white"
-                    android:buttonTint="@color/md_white"/>
 
             </LinearLayout>
 
@@ -154,6 +136,33 @@
                     android:layout_height="35dp"
                     android:background="@mipmap/ic_action_calendar_day"
                     android:id="@+id/img_listtrans_tglto2"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/ckAllPasienTrans2"
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Semua Pasien"
+                    android:textColor="@color/md_white"
+                    android:buttonTint="@color/md_white"/>
+
+                <CheckBox
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/ckAllPeriode2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Semua Periode"
+                    android:textColor="@color/md_white"
+                    android:buttonTint="@color/md_white"/>
 
             </LinearLayout>
 

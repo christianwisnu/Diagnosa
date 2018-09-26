@@ -28,14 +28,15 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="480dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/endoskop_tri_52"
+                android:background="@color/md_purple_700"
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -87,7 +88,7 @@
                             android:id="@+id/eDataPasienNama2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Nama Pasien"
+                            android:hint="Nama Lengkap Pasien"
                             android:imeOptions="actionNext"
                             android:inputType="textCapWords"
                             android:nextFocusForward="@+id/eDataPasienAlamat2"
@@ -123,7 +124,7 @@
                             android:id="@+id/eDataPasienAlamat2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Alamat"
+                            android:hint="Alamat sesuai KTP"
                             android:imeOptions="actionNext"
                             android:inputType="textCapWords"
                             android:nextFocusForward="@+id/eDataPasienTelp2"
@@ -175,34 +176,22 @@
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/input_layout_datapasien_tgl2"
+                    <EditText
+                        android:id="@+id/eDataPasienTgl2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
+                        android:hint="Tanggal Lahir"
+                        android:clickable="true"
+                        android:focusableInTouchMode="true"
                         android:textColor="@color/md_white"
-                        android:textColorHint="@color/md_white"
-                        app:errorTextAppearance="@style/error_appearance"
-                        app:hintTextAppearance="@style/label_text">
-
-                        <EditText
-                            android:id="@+id/eDataPasienTgl2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Tanggal Lahir"
-                            android:clickable="true"
-                            android:enabled="false"
-                            android:textColor="@color/md_white"
-                            android:textColorHint="@color/md_white"/>
-
-                    </android.support.design.widget.TextInputLayout>
+                        android:textColorHint="@color/md_white"/>
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@mipmap/ic_action_calendar_day"
-                        android:layout_marginLeft="-50dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="-40dp"
+                        android:layout_marginTop="2dp"
                         android:id="@+id/img_datapasien_kalendar2"/>
 
                 </LinearLayout>

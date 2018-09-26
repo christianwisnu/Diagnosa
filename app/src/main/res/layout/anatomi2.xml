@@ -196,7 +196,7 @@
                         android:layout_marginLeft="5dp"
                         android:background="@drawable/cardcyclepurple"
                         android:gravity="center"
-                        android:text="LAROFARING\n(TENGGOROKAN)"
+                        android:text="LARING"
                         android:textColor="@color/md_white"
                         android:textSize="17dp"/>
 
@@ -232,7 +232,7 @@
                         android:layout_marginLeft="5dp"
                         android:background="@drawable/cardcyclepurple"
                         android:gravity="center"
-                        android:text="OFARING\n(RONGGA MULUT)"
+                        android:text="OROFARING"
                         android:textColor="@color/md_white"
                         android:textSize="17dp" />
 

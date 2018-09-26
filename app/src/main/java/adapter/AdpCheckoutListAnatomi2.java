@@ -108,7 +108,7 @@ public class AdpCheckoutListAnatomi2 extends ArrayAdapter<TransaksiItemModel> {
             }
         });
 
-        holder.TvNamaAnatomi.setText("Bagian: "+columnslist.get(position).getAnatomi());
+        holder.TvNamaAnatomi.setText(String.valueOf(position+1)+". "+columnslist.get(position).getAnatomi());
         return v;
     }
 

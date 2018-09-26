@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -64,10 +65,11 @@ public class LaporanPemeriksaan extends AppCompatActivity {
     private ArrayList<ListTransaksi> columnlist= new ArrayList<ListTransaksi>();
     private ListTransaksi item;
     private CheckBox ckAllPasien, ckAllPeriode;
-    private TextView txtPilihPasien, txtStatus;
-    private EditText edTglFrom, edTglTo, edKodePasien;
+    private TextView txtStatus;
+    private TextInputLayout inputLayoutNama;
+    private EditText edTglFrom, edTglTo, edNamaPasien;
     private Button btnProses;
-    private ImageView imgTglFrom, imgTglTo;
+    private ImageView imgTglFrom, imgTglTo, imgPilihPasien;
     private String getData2	="laporanDistinct.php";
     private boolean allPasien = false, allPeriode = false;
     private SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
@@ -98,13 +100,14 @@ public class LaporanPemeriksaan extends AppCompatActivity {
         lsvupload	= (ListView)findViewById(R.id.LsvTransaksi2);
         ckAllPasien = (CheckBox)findViewById(R.id.ckAllPasienTrans2);
         ckAllPeriode = (CheckBox)findViewById(R.id.ckAllPeriode2);
-        edKodePasien = (EditText) findViewById(R.id.edIdPasienTrans2);
+        inputLayoutNama = (TextInputLayout)findViewById(R.id.input_layout_riwayat1_nama2);
+        edNamaPasien = (EditText) findViewById(R.id.eRiwayat1PasienNama2);
         edTglTo = (EditText) findViewById(R.id.edTglToTrans2);
         edTglFrom = (EditText) findViewById(R.id.edTglFromTrans2);
         btnProses = (Button) findViewById(R.id.btnProsesListTrans2);
         imgTglFrom = (ImageView) findViewById(R.id.img_listtrans_tglfrom2);
         imgTglTo = (ImageView) findViewById(R.id.img_listtrans_tglto2);
-        txtPilihPasien = (TextView)findViewById(R.id.txtPilihPasienTrans2);
+        imgPilihPasien = (ImageView) findViewById(R.id.imgPilihPasienRiwayat1);
         txtStatus = (TextView) findViewById(R.id.TvStatusDataListTransaksi2);
 
         model2 = new LaporanModel();
@@ -116,11 +119,11 @@ public class LaporanPemeriksaan extends AppCompatActivity {
             public void onClick(View v) {
                 if(allPasien){
                     allPasien=false;
-                    //txtPilihPasien.setVisibility(View.VISIBLE);
+                    //imgPilihPasien.setVisibility(View.VISIBLE);
                 }else{
                     allPasien=true;
-                    edKodePasien.setText(null);
-                    //txtPilihPasien.setVisibility(View.INVISIBLE);
+                    edNamaPasien.setText(null);
+                    //imgPilihPasien.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -146,7 +149,7 @@ public class LaporanPemeriksaan extends AppCompatActivity {
             }
         });
 
-        txtPilihPasien.setOnClickListener(new View.OnClickListener() {
+        imgPilihPasien.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!allPasien){
@@ -230,9 +233,9 @@ public class LaporanPemeriksaan extends AppCompatActivity {
 
     private boolean validatePasien() {
         boolean value;
-        if (edKodePasien.getText().toString().isEmpty() && !ckAllPasien.isChecked()){
+        if (edNamaPasien.getText().toString().isEmpty() && !ckAllPasien.isChecked()){
             value=false;
-            Toast.makeText(LaporanPemeriksaan.this,"Kode Pasien harap dipilih!", Toast.LENGTH_LONG).show();
+            Toast.makeText(LaporanPemeriksaan.this,"Pasien harap dipilih!", Toast.LENGTH_LONG).show();
         } else {
             value=true;
         }
@@ -520,7 +523,7 @@ public class LaporanPemeriksaan extends AppCompatActivity {
         if(requestCode == RESULT_PASIEN) {
             if(resultCode == RESULT_OK) {
                 kodePasien = data.getStringExtra("kode");
-                edKodePasien.setText(data.getStringExtra("nama"));
+                edNamaPasien.setText(data.getStringExtra("nama"));
             }
         }
         if(requestCode == RESULT_EDIT_KESIMPULAN) {
@@ -532,7 +535,7 @@ public class LaporanPemeriksaan extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
                 lsvupload.setAdapter(adapter);
 
-                edKodePasien.setText(null);
+                edNamaPasien.setText(null);
                 ckAllPasien.setChecked(false);
                 edTglFrom.setText(null);
                 edTglTo.setText(null);
