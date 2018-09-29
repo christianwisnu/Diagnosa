@@ -524,8 +524,8 @@ public class KesimpulanActivity2 extends AppCompatActivity {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         // Set time fields to zero
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
+        //cal.set(Calendar.HOUR_OF_DAY, 0);
+        //cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
         date = cal.getTime();

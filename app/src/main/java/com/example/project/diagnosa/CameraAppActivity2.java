@@ -4,11 +4,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +30,8 @@ public class CameraAppActivity2 extends ActionBarActivity {
     private static final int VIDEO_CAPTURE = 101;
     private static final int SCREENSHOOT = 105;
     private static final int MANUAL_RECORDING = 110;
-    private Uri hasilUri;
+    private String sdbname;
+    private Uri hasilUri, fileUri;
     private TransaksiModel model;
     private String video, bagian;
     private int sukses=0;
@@ -88,9 +93,9 @@ public class CameraAppActivity2 extends ActionBarActivity {
     }
 
     public void startRecording(){
-        /*File sd = Environment.getExternalStorageDirectory();
+        File sd = Environment.getExternalStorageDirectory();
         sdbname = (Utils.getDateTimeNameFile()+".mp4");
-        Utils.writeVideoToSDFile( sdbname);
+        Utils.writeVideoToSDFile(sdbname);
         String backupDBPath = "Diagnosa/Video/"+sdbname;
         File mediaFile = new File( sd, backupDBPath);
 
@@ -98,11 +103,11 @@ public class CameraAppActivity2 extends ActionBarActivity {
         fileUri = Uri.fromFile(mediaFile);
 
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-        startActivityForResult(intent, VIDEO_CAPTURE);*/
+        startActivityForResult(intent, VIDEO_CAPTURE);
 
-        Intent i = new Intent(getApplicationContext(), CustomCamera3.class);
+        /*Intent i = new Intent(getApplicationContext(), CustomCamera3.class);
         i.putExtra("bagian", bagian);
-        startActivityForResult(i, MANUAL_RECORDING);
+        startActivityForResult(i, MANUAL_RECORDING);*/
     }
 
     @Override
