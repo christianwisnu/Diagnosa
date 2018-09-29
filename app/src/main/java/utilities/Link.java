@@ -12,7 +12,7 @@ public class Link {
     public static final String TEL_KR="TELINGA KIRI";
     public static final String HDG_KN="HIDUNG KANAN";
     public static final String HDG_KR="HIDUNG KIRI";
-    public static final String TGR="LAROFARING";
+    public static final String TGR="LARING";
     public static final String MLT="OROFARING";
     public static final String ICON_PDF="icon_pdf.png";
 
