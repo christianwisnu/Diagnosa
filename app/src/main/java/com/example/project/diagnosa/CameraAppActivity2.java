@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
@@ -33,7 +34,7 @@ public class CameraAppActivity2 extends ActionBarActivity {
     private String sdbname;
     private Uri hasilUri, fileUri;
     private TransaksiModel model;
-    private String video, bagian;
+    private String video, bagian, status;
     private int sukses=0;
     private int line;
 
@@ -50,6 +51,7 @@ public class CameraAppActivity2 extends ActionBarActivity {
         model = (TransaksiModel) i.getSerializableExtra("object");
         line = i.getIntExtra("line",0);
         video = i.getStringExtra("video");
+        status = i.getStringExtra("status");
         for(TransaksiItemModel item:model.getItemList() ){
             if(item.getLine()==line){
                 bagian = item.getAnatomi();
@@ -60,6 +62,9 @@ public class CameraAppActivity2 extends ActionBarActivity {
                 }
             }
         }
+        if(status.equals("Y")){
+            startRecording();
+        }
     }
 
     @OnClick(R.id.imgRecordCam)
@@ -69,6 +74,15 @@ public class CameraAppActivity2 extends ActionBarActivity {
 
     @OnClick(R.id.imgLanjutCam)
     protected void proses(){
+        lanjutkan();
+    }
+
+    @OnClick(R.id.imgplayvideo2)
+    protected void playvideo(){
+        screenshoot();
+    }
+
+    private void lanjutkan(){
         if(sukses>0 || hasilUri!=null){
             Intent returnIntent = new Intent();
             returnIntent.putExtra("object", model);
@@ -79,35 +93,33 @@ public class CameraAppActivity2 extends ActionBarActivity {
         }
     }
 
-    @OnClick(R.id.imgplayvideo2)
-    protected void playvideo(){
-        if(sukses>0 || hasilUri!=null){
-            Intent i = new Intent(getApplicationContext(), ViewVideoActivity.class);
-            i.putExtra("line", line);
-            i.putExtra("fileuri", hasilUri.toString());
-            i.putExtra("object", model);
-            startActivityForResult(i, SCREENSHOOT);
-        }else{
-            Toast.makeText (CameraAppActivity2.this, "Video tidak ada", Toast.LENGTH_LONG).show ();
-        }
-    }
-
     public void startRecording(){
-        File sd = Environment.getExternalStorageDirectory();
         sdbname = (Utils.getDateTimeNameFile()+".mp4");
         Utils.writeVideoToSDFile(sdbname);
-        String backupDBPath = "Diagnosa/Video/"+sdbname;
-        File mediaFile = new File( sd, backupDBPath);
-
+        File mediaFile = new File( Environment.getExternalStorageDirectory() +
+                "/" + "Diagnosa/Video"+ "/" +sdbname);
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        fileUri = Uri.fromFile(mediaFile);
-
+        fileUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName()+
+                ".com.example.project.diagnosa.provider", mediaFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
         startActivityForResult(intent, VIDEO_CAPTURE);
 
         /*Intent i = new Intent(getApplicationContext(), CustomCamera3.class);
         i.putExtra("bagian", bagian);
         startActivityForResult(i, MANUAL_RECORDING);*/
+    }
+
+    private void screenshoot(){
+        if(sukses>0 || hasilUri!=null){
+            Intent i = new Intent(getApplicationContext(), ViewVideoActivity.class);
+            i.putExtra("line", line);
+            i.putExtra("fileuri", hasilUri.toString());
+            i.putExtra("object", model);
+            i.putExtra("namaFile", sdbname);
+            startActivityForResult(i, SCREENSHOOT);
+        }else{
+            Toast.makeText (CameraAppActivity2.this, "Video tidak ada", Toast.LENGTH_LONG).show ();
+        }
     }
 
     @Override
@@ -117,8 +129,6 @@ public class CameraAppActivity2 extends ActionBarActivity {
             if (resultCode == RESULT_OK){
                 Uri uri = data.getData();
                 hasilUri = uri;
-                Toast.makeText(this, "Video has been saved to:\n" +
-                        data.getData(), Toast.LENGTH_LONG).show();
                 sukses=1;
                 for(TransaksiItemModel itemModel:model.getItemList()){
                     if(itemModel.getLine().intValue()==line){
@@ -134,10 +144,12 @@ public class CameraAppActivity2 extends ActionBarActivity {
                 Toast.makeText(this, "Failed to record video",
                         Toast.LENGTH_LONG).show();
             }
+            screenshoot();
         }else if(requestCode == SCREENSHOOT){
             if(resultCode == RESULT_OK){
                 model = (TransaksiModel) data.getSerializableExtra("object");
             }
+            lanjutkan();
         }else if(requestCode == MANUAL_RECORDING){
             if(resultCode == RESULT_OK){
                 String path = (String) data.getStringExtra("pathvideo");

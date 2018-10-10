@@ -1,5 +1,6 @@
 package com.example.project.diagnosa;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -8,11 +9,13 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -66,10 +69,9 @@ public class LaporanPemeriksaan extends AppCompatActivity {
     private ListTransaksi item;
     private CheckBox ckAllPasien, ckAllPeriode;
     private TextView txtStatus;
-    private TextInputLayout inputLayoutNama;
     private EditText edTglFrom, edTglTo, edNamaPasien;
-    private Button btnProses;
-    private ImageView imgTglFrom, imgTglTo, imgPilihPasien;
+    private Button btnProses, btnPemeriksaan;
+    private ImageView imgTglFrom, imgTglTo;
     private String getData2	="laporanDistinct.php";
     private boolean allPasien = false, allPeriode = false;
     private SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
@@ -83,6 +85,7 @@ public class LaporanPemeriksaan extends AppCompatActivity {
     private LaporanModel modelNext;
     private PrefUtil prefUtil;
     private SharedPreferences shared;
+    private ImageButton btnddPasien;
     private int RESULT_EDIT_KESIMPULAN = 21;
 
     @Override
@@ -100,30 +103,32 @@ public class LaporanPemeriksaan extends AppCompatActivity {
         lsvupload	= (ListView)findViewById(R.id.LsvTransaksi2);
         ckAllPasien = (CheckBox)findViewById(R.id.ckAllPasienTrans2);
         ckAllPeriode = (CheckBox)findViewById(R.id.ckAllPeriode2);
-        inputLayoutNama = (TextInputLayout)findViewById(R.id.input_layout_riwayat1_nama2);
         edNamaPasien = (EditText) findViewById(R.id.eRiwayat1PasienNama2);
         edTglTo = (EditText) findViewById(R.id.edTglToTrans2);
         edTglFrom = (EditText) findViewById(R.id.edTglFromTrans2);
         btnProses = (Button) findViewById(R.id.btnProsesListTrans2);
         imgTglFrom = (ImageView) findViewById(R.id.img_listtrans_tglfrom2);
         imgTglTo = (ImageView) findViewById(R.id.img_listtrans_tglto2);
-        imgPilihPasien = (ImageView) findViewById(R.id.imgPilihPasienRiwayat1);
         txtStatus = (TextView) findViewById(R.id.TvStatusDataListTransaksi2);
+        btnddPasien = (ImageButton) findViewById(R.id.btnRiwayatAddPasien);
+        btnPemeriksaan = (Button)findViewById(R.id.btnProsesTransaksiBaru);
 
         model2 = new LaporanModel();
         adapter		= new AdpTransaksi(LaporanPemeriksaan.this, R.layout.col_transaksi, columnlist);
         lsvupload.setAdapter(adapter);
+
+        edTglFrom.requestFocus();
 
         ckAllPasien.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(allPasien){
                     allPasien=false;
-                    //imgPilihPasien.setVisibility(View.VISIBLE);
+                    edNamaPasien.setEnabled(true);
                 }else{
                     allPasien=true;
                     edNamaPasien.setText(null);
-                    //imgPilihPasien.setVisibility(View.INVISIBLE);
+                    edNamaPasien.setEnabled(false);
                 }
             }
         });
@@ -133,8 +138,6 @@ public class LaporanPemeriksaan extends AppCompatActivity {
             public void onClick(View v) {
                 if(allPeriode){
                     allPeriode=false;
-                    //imgTglFrom.setVisibility(View.VISIBLE);
-                    //imgTglTo.setVisibility(View.VISIBLE);
                 }else{
                     allPeriode=true;
                     edTglFrom.setText(null);
@@ -143,19 +146,32 @@ public class LaporanPemeriksaan extends AppCompatActivity {
                     edTglTo.setText(null);
                     hasilTglTo=null;
                     tglTo=null;
-                    //imgTglFrom.setVisibility(View.INVISIBLE);
-                    //imgTglTo.setVisibility(View.INVISIBLE);
                 }
             }
         });
 
-        imgPilihPasien.setOnClickListener(new View.OnClickListener() {
+        edNamaPasien.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!allPasien){
-                    Intent i = new Intent(LaporanPemeriksaan.this, ListPasienView2.class);
-                    i.putExtra("userid", userId);
-                    startActivityForResult(i,RESULT_PASIEN);
+                    edNamaPasien.setEnabled(false);
+                    hideKeyboard(v);
+                    pilihPasien();
+                    edNamaPasien.setEnabled(true);
+                }
+            }
+        });
+
+        edNamaPasien.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    if(!allPasien){
+                        edNamaPasien.setEnabled(false);
+                        hideKeyboard(v);
+                        pilihPasien();
+                        edNamaPasien.setEnabled(true);
+                    }
                 }
             }
         });
@@ -204,6 +220,25 @@ public class LaporanPemeriksaan extends AppCompatActivity {
             }
         });
 
+        btnddPasien.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent a = new Intent(LaporanPemeriksaan.this, DataPasien2.class);
+                a.putExtra("Status",1);
+                startActivity(a);
+            }
+        });
+
+        btnPemeriksaan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LaporanPemeriksaan.this, AddDataPasien2.class);
+                i.putExtra("status","NEW");
+                startActivity(i);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            }
+        });
+
         btnProses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -214,6 +249,17 @@ public class LaporanPemeriksaan extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void pilihPasien(){
+        Intent i = new Intent(LaporanPemeriksaan.this, ListPasienView2.class);
+        i.putExtra("userid", userId);
+        startActivityForResult(i,RESULT_PASIEN);
+    }
+
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     static class Urut implements Comparator {

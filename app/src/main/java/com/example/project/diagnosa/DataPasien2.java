@@ -70,7 +70,6 @@ public class DataPasien2 extends AppCompatActivity {
     private AlertDialog alert;
     private EditText edTgl;
 
-    @BindView(R.id.btnDataPasienSave2)Button btnSave;
     @BindView(R.id.btnDataPasienSaveLanjut2)Button btnSaveLanjut;
     @BindView(R.id.input_layout_datapasien_kode2)TextInputLayout inputLayoutKode;
     @BindView(R.id.input_layout_datapasien_nama2)TextInputLayout inputLayoutNama;
@@ -170,49 +169,10 @@ public class DataPasien2 extends AppCompatActivity {
                 dateAndTime.get(Calendar.DAY_OF_MONTH)).show();
     }
 
-    @OnClick(R.id.btnDataPasienSave2)
-    protected void save(){
-        if(validateNama(eNama) && validateKalender(edTgl) && validateGender(rgGender)
-                && validateAlamat(eAlamat) && validateTelp(eTelp)){
-            int selectedId = rgGender.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(selectedId);
-
-            AlertDialog.Builder msMaintance = new AlertDialog.Builder(DataPasien2.this);
-            msMaintance.setCancelable(false);
-            msMaintance.setMessage("Data akan disimpan? ");
-            msMaintance.setNegativeButton("Ya", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (status==1){
-                        getMaxNumber(Link.BASE_URL_API+"getMaxNomor.php", false);
-                    }else if (status==2 || status==10){
-                        if(validateKode(eKode)){
-                            savePasien(eKode.getText().toString(),eNama.getText().toString(),
-                                    eAlamat.getText().toString(), eTelp.getText().toString(),
-                                    radioButton.getText().toString().equals("Laki-laki")?"L":"P", hasilTgl,
-                                    0, 0, 0, Link.BASE_URL_API+"savePasien.php","EDIT", false);
-                        }
-                    }
-                }
-            });
-
-            msMaintance.setPositiveButton("Tidak", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    alert.dismiss();
-                }
-            });
-            alert	=msMaintance.create();
-            alert.show();
-        }
-    }
-
     @OnClick(R.id.btnDataPasienSaveLanjut2)
     protected void savelanjut(){
-        if(validateNama(eNama) && validateKalender(edTgl) && validateGender(rgGender)
-                && validateAlamat(eAlamat) && validateTelp(eTelp)){
+        if(validateNama(eNama) && validateAlamat(eAlamat) && validateTelp(eTelp)
+                && validateKalender(edTgl) && validateGender(rgGender)){
             int selectedId = rgGender.getCheckedRadioButtonId();
             radioButton = (RadioButton) findViewById(selectedId);
 
@@ -327,26 +287,17 @@ public class DataPasien2 extends AppCompatActivity {
                         Intent returnIntent = new Intent();
                         if(lanjut==true){
                             Intent i = new Intent(DataPasien2.this, AddDataPasien2.class);
-                            i.putExtra("status","MASTER");
+                            i.putExtra("status","EDIT");
                             i.putExtra("kode", kode);
                             i.putExtra("nama", nama);
                             i.putExtra("alamat", alamat);
                             i.putExtra("gender", gender);
                             i.putExtra("telp", telp);
-                            Date date1=new SimpleDateFormat("dd-MM-yyy").parse(birthday);
+                            Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(birthday);
                             i.putExtra("tgl", df2.format(date1));
                             startActivity(i);
                             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                             finish();
-
-                            /*returnIntent.putExtra("kode",kode);
-                            returnIntent.putExtra("nama", nama);
-                            returnIntent.putExtra("alamat", alamat);
-                            returnIntent.putExtra("gender", gender);
-                            returnIntent.putExtra("telp", telp);
-                            returnIntent.putExtra("tgl", birthday);
-                            setResult(RESULT_OK, returnIntent);
-                            finish();*/
                         }else{
                             if(status==10){
                                 returnIntent.putExtra("kode",kode);

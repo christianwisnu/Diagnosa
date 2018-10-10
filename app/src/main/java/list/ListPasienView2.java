@@ -73,8 +73,10 @@ public class ListPasienView2 extends AppCompatActivity {
             public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
                 JSONResponse jsonResponse = response.body();
                 mArrayList = new ArrayList<>(Arrays.asList(jsonResponse.getPasien()));
+                if(mArrayList.isEmpty()){
+                    Toast.makeText(ListPasienView2.this, "Tidak Ada Data!", Toast.LENGTH_LONG).show();
+                }
                 mAdapter = new AdpListPasien2(ListPasienView2.this, mArrayList);
-                //assert mRecyclerView != null;
                 mRecyclerView.setAdapter(mAdapter);
                 progress.dismiss();
             }
@@ -92,7 +94,9 @@ public class ListPasienView2 extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         MenuItem search = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
+        search.expandActionView();
+        searchView.requestFocus();
         search(searchView);
         return true;
     }

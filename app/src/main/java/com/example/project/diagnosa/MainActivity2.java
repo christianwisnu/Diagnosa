@@ -44,7 +44,6 @@ public class MainActivity2 extends AppCompatActivity{
     private String userName;
     private RequestPermissionHandler mRequestPermissionHandler;
     private List<String> listPermissionsNeeded;
-    private String[] items = {"Baru", "Lama"};
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -113,23 +112,9 @@ public class MainActivity2 extends AppCompatActivity{
 
     @OnClick(R.id.imgMainPasienBaru)
     protected void baru(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Pasien");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (items[i].equals("Baru")) {
-                    Intent a = new Intent(MainActivity2.this, DataPasien2.class);
-                    a.putExtra("Status",1);
-                    startActivity(a);
-                } else if (items[i].equals("Lama")) {
-                    Intent a = new Intent(MainActivity2.this, AddDataPasien2.class);
-                    a.putExtra("status","NEW");
-                    startActivity(a);
-                }
-            }
-        });
-        builder.show();
+        Intent a = new Intent(MainActivity2.this, DataPasien2.class);
+        a.putExtra("Status",1);
+        startActivity(a);
     }
 
     @OnClick(R.id.imgMainHistoryPasien)
