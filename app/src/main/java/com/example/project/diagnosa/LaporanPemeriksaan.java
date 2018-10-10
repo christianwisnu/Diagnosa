@@ -467,6 +467,7 @@ public class LaporanPemeriksaan extends AppCompatActivity {
                     if(JsonArray.get(0).toString().trim().equals("null")==true){
                         txtStatus.setVisibility(View.VISIBLE);
                         txtStatus.setText("Data Tidak Ada");
+                        hideDialog();
                     }else if(JsonArray.length()>0){
                         txtStatus.setVisibility(View.INVISIBLE);
                         for (int i = 0; i <JsonArray.getJSONArray(0).length(); i++) {

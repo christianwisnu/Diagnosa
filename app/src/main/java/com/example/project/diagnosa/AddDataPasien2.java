@@ -84,7 +84,7 @@ public class AddDataPasien2 extends AppCompatActivity {
             username = shared.getString(PrefUtil.NAME, null);
         }catch (Exception e){e.getMessage();}
         status =  i.getStringExtra("status");
-        if(status.equals("EDIT")){
+        if(status.equals("MASTER")){
             kode = i.getStringExtra("kode");
             nama = i.getStringExtra("nama");
             alamat = i.getStringExtra("alamat");
@@ -107,12 +107,12 @@ public class AddDataPasien2 extends AppCompatActivity {
                 edPasienBirthday.setText(sdf1.format(date1.getTime()));
                 int age = calculateAge(date1);
                 edUmur.setText(String.valueOf(age));
-                next();
-            }catch (Exception ex){}
+            }catch (Exception ex){
+            }
         }
-
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
+
     }
 
     @OnClick(R.id.img_newpasien_pilih2)
@@ -131,10 +131,6 @@ public class AddDataPasien2 extends AppCompatActivity {
 
     @OnClick(R.id.btn_pasien_lanjut2)
     protected void lanjut(){
-        next();
-    }
-
-    private void next(){
         if(validateKode(edNoPasien) && validateNama(edNamaPasien) && validateKalender(edPasienBirthday) && validateGender(radioGrup)
                 && validateAlamat(edAlamat) && validateTelp(edTelp)){
             int selectedId = radioGrup.getCheckedRadioButtonId();
@@ -153,6 +149,7 @@ public class AddDataPasien2 extends AppCompatActivity {
                 i.putExtra("object",model);
                 startActivity(i);
             }catch (Exception ex){}
+
         }
     }
 
@@ -245,7 +242,7 @@ public class AddDataPasien2 extends AppCompatActivity {
                     edNoPasien.setText(kode);
                     edNamaPasien.setText(nama);
                     edAlamat.setText(alamat);
-                    if(gender.equals("Laki-laki")){
+                    if(gender.equals("L")){
                         rbLaki.setChecked(true);
                         rbWanita.setChecked(false);
                     }else{
@@ -253,7 +250,7 @@ public class AddDataPasien2 extends AppCompatActivity {
                         rbWanita.setChecked(true);
                     }
                     edTelp.setText(telp);
-                    Date date1=new SimpleDateFormat("dd-MM-yyyy").parse(tgl);
+                    Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(tgl);
                     edPasienBirthday.setText(sdf1.format(date1.getTime()));
                     int age = calculateAge(date1);
                     edUmur.setText(String.valueOf(age));
