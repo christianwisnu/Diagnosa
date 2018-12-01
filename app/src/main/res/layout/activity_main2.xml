@@ -26,9 +26,9 @@
         android:gravity="center">
 
         <ImageView
-            android:layout_width="200dp"
-            android:layout_height="210dp"
-            android:background="@drawable/endoskoptri_logo"/>
+            android:layout_width="170dp"
+            android:layout_height="180dp"
+            android:background="@drawable/endoskop_tri_26"/>
 
     </LinearLayout>
 
@@ -97,7 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/md_purple_600"
-                    android:text="Pemeriksaan"
+                    android:text="Pasien Baru"
                     android:textStyle="normal"
                     android:textSize="14dp"/>
 
@@ -129,7 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/md_purple_600"
-                    android:text="User Control"
+                    android:text="Pasien Kontrol"
                     android:textStyle="normal"
                     android:textSize="14dp"/>
 
