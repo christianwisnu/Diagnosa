@@ -31,6 +31,14 @@ public interface BaseApiService {
                                        @Field("createdBy") String by);
 
     @FormUrlEncoded
+    @POST("register.php")
+    Call<ResponseBody> createUser(@Field("userid") String id,
+                                       @Field("password") String pasw,
+                                       @Field("username") String nama,
+                                       @Field("tglNow") String tanggalNow,
+                                       @Field("createdBy") String by);
+
+    @FormUrlEncoded
     @POST("saveTrans.php")
     Call<ResponseBody> savePemeriksaan(@Field("pasienId") String pasienId,
                                        @Field("noTrans") String noTrans,

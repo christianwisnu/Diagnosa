@@ -12,12 +12,12 @@ android {
             storePassword 'm4c4n3189'
         }
     }*/
-    compileSdkVersion 26
-    buildToolsVersion "27.0.3"
+    compileSdkVersion 27
+    buildToolsVersion "28.0.2"
     defaultConfig {
         applicationId "com.example.project.diagnosa"
         minSdkVersion 15
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -54,7 +54,7 @@ android {
             minSdkVersion 15
             applicationId "com.example.project.diagnosa"
             signingConfig signingConfigs.debug
-            targetSdkVersion 26
+            targetSdkVersion 27
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
             versionCode 1
             versionName '1.0'
